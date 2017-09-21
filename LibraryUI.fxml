@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="419.0" layoutY="16.0" mnemonicParsing="false" text="Add" />
+      <Button layoutX="467.0" layoutY="16.0" mnemonicParsing="false" text="Delete" />
+      <Button layoutX="573.0" layoutY="16.0" mnemonicParsing="false" text="Edit" />
+      <ListView layoutX="17.0" layoutY="91.0" prefHeight="303.0" prefWidth="600.0" />
+      <TextField floatText="Song" layoutX="17.0" layoutY="47.0" />
+      <TextField floatText="Artist" layoutX="223.0" layoutY="47.0" />
+      <TextField floatText="Year" layoutX="430.0" layoutY="47.0" />
+   </children>
+</AnchorPane>
