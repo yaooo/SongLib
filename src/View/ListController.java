@@ -2,12 +2,26 @@ package View;
 
 import compare.Node;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 
 public class ListController {
 	@FXML
-	ListView<Node> listView;
+	private ListView<Node> listView;
 	@FXML
-	Text title, artist, album, year;
+	private Text title;
+	@FXML
+	private Text artist;
+	@FXML
+	private Text album;
+	@FXML
+	private Text year;
+	@FXML
+	private Button edit;
+	@FXML
+	private Button add;
+	@FXML
+	private Button delete;
+
 }
