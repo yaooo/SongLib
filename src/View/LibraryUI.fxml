@@ -55,7 +55,7 @@
                         <Font size="20.0" />
                      </font>
                   </Text>
-                  <Text fx:id="Title" strokeType="OUTSIDE" strokeWidth="0.0" text="title" GridPane.columnIndex="1">
+                  <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="title" GridPane.columnIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
