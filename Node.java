@@ -1,15 +1,32 @@
 package compare;
 
 public class Node {
-	String ArtistName;
-	String SongName;
-	String Album ;
-	int Year;
+	private String ArtistName;
+	private String SongName;
+	private String Album ;
+	private int Year;
 	Node Next;
 	
-	public Node(String an, String sn){
+	public Node(String sn, String an){
 		ArtistName=an;
 		SongName=sn;
+		Album="";
+	}
+	public Node(String sn, String an,String ab) {
+		ArtistName=an;
+		SongName=sn;
+		Album=ab;
+	}
+	public Node(String sn, String an,String ab, int y) {
+		ArtistName=an;
+		SongName=sn;
+		Album=ab;
+		Year =y;
+	}
+	public Node(String sn, String an, int y) {
+		ArtistName=an;
+		SongName=sn;
+		Year =y;
 		Album="";
 	}
 	public Node() {}
