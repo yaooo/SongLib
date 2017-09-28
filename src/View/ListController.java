@@ -1,6 +1,7 @@
 package View;
 
 import compare.Node;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -23,5 +24,13 @@ public class ListController {
 	private Button add;
 	@FXML
 	private Button delete;
+
+	@FXML
+	private void handleAddButton(ActionEvent event) {
+		if (event.getSource() == add) {
+
+		}
+
+	}
 
 }
