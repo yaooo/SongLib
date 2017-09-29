@@ -161,5 +161,41 @@ public class ListController {
 		}
 		return true;
 	}
+	public static void readFile(String path) {
+		File file = new File(path);
+		StringBuilder stringBuffer = new StringBuilder();
+		BufferedReader bufferedReader = null;
+
+		try {
+
+			bufferedReader = new BufferedReader(new FileReader(file));
+
+			String text;
+			while ((text = bufferedReader.readLine()) != null) {
+				String[] arr = new String[4];
+				text += '-';
+				System.out.println(text);
+
+				for (int i = 0; i < 4; i++) {
+					int index = text.indexOf("-");
+					arr[i] = text.substring(0, index);
+					text = text.substring(index + 1);
+				}
+
+			}
+
+		} catch (FileNotFoundException ex) {
+			System.out.println("File not found.");
+			;
+		} catch (IOException ex) {
+			System.out.println("IO exception when reading file.");
+		} finally {
+			try {
+				bufferedReader.close();
+			} catch (IOException ex) {
+				System.out.println("IO.exception when trying to cloase file");
+			}
+		}
+	}
 	 
 }
