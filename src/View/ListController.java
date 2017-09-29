@@ -2,6 +2,7 @@ package View;
 
 import compare.Node;
 import compare.SongLinkedList;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import java.io.*;
+import java.util.regex.Pattern;
+
 import javafx.stage.*;
 
 public class ListController {
@@ -52,16 +55,35 @@ public class ListController {
 
 	}
 	
-	SongLinkedList List= new SongLinkedList();
+	static SongLinkedList List= new SongLinkedList();
 	private ObservableList<String> obsList= FXCollections.observableArrayList();
+	int titlecounter=0;
 	public void start (Stage stage)throws IOException {
 		List.PopulateList();
 		Node ptr=List.head;
 		while(ptr!=null) {
-			obsList.add(ptr.GetSong() +" , "+ptr.GetArtist());
+			obsList.add(ptr.GetSong() +" - "+ptr.GetArtist());
 			ptr=ptr.Next;
 		}
 		listView.setItems(obsList);
+		listView.getSelectionModel().select(0);
+		if(listView.getSelectionModel().getSelectedItem()==null) {}
+		else {
+			String s=listView.getSelectionModel().getSelectedItem();
+			String[] parts=s.split(Pattern.quote(" - "));
+			Node ptr2=LoopUp(List.head, parts[0], parts[1]);
+			String yearNumber = "";
+			title.setText(ptr2.GetSong());
+			artist.setText(ptr2.GetArtist());
+			album.setText(ptr2.GetAlbum());
+			if(ptr2.GetYear() != 0)
+				yearNumber += ptr2.GetYear();
+			year.setText(yearNumber);
+			
+		}
+		listView.getSelectionModel().selectedIndexProperty().addListener(
+	    (obs, oldVal, newVal) -> 
+	               showItemInputDialog(stage));
 		add.setOnAction(arg0 -> {
 			try {
 				handleAdd(arg0);
@@ -73,6 +95,32 @@ public class ListController {
 		
 	}
 
+	private Object showItemInputDialog(Stage stage) {
+		String s= listView.getSelectionModel().getSelectedItem();
+		String[] parts=s.split(Pattern.quote(" - "));
+		Node ptr=LoopUp(List.head, parts[0], parts[1]);
+		String yearNumber = "";
+		title.setText(ptr.GetSong());
+		artist.setText(ptr.GetArtist());
+		album.setText(ptr.GetAlbum());
+		if(ptr.GetYear() != 0)
+			yearNumber += ptr.GetYear();
+		year.setText(yearNumber);
+		
+		
+		return null;
+	}
+	private Node LoopUp(Node head, String song, String artist) {
+		Node temp = head;
+
+		while (temp != null) {
+			if (song.equals(temp.GetSong()) && artist.equals(temp.GetArtist())) {
+				return temp;
+			}
+			temp = temp.Next;
+		}
+		return null;
+	}
 	public void add(String sn, String an)throws IOException {
 
 		List.AddNode(sn, an);
@@ -161,41 +209,6 @@ public class ListController {
 		}
 		return true;
 	}
-	public static void readFile(String path) {
-		File file = new File(path);
-		StringBuilder stringBuffer = new StringBuilder();
-		BufferedReader bufferedReader = null;
 
-		try {
-
-			bufferedReader = new BufferedReader(new FileReader(file));
-
-			String text;
-			while ((text = bufferedReader.readLine()) != null) {
-				String[] arr = new String[4];
-				text += '-';
-				System.out.println(text);
-
-				for (int i = 0; i < 4; i++) {
-					int index = text.indexOf("-");
-					arr[i] = text.substring(0, index);
-					text = text.substring(index + 1);
-				}
-
-			}
-
-		} catch (FileNotFoundException ex) {
-			System.out.println("File not found.");
-			;
-		} catch (IOException ex) {
-			System.out.println("IO exception when reading file.");
-		} finally {
-			try {
-				bufferedReader.close();
-			} catch (IOException ex) {
-				System.out.println("IO.exception when trying to cloase file");
-			}
-		}
-	}
 	 
 }

@@ -807,11 +807,16 @@ public class SongLinkedList {
 		}
 		SongWriter.close();
 	}
-	public static void main(String[] args) throws IOException {
+	/**
+	 * Return null if not in the list, otherwise return the node where the song is
+	 * stored
+	 */
+	
+public static void main(String[] args) throws IOException {
 		SongLinkedList List= new SongLinkedList();
 		List.PopulateList();
-		List.PrintList();
-		List.WriteList();
+		System.out.println(List.head);
+		//System.out.println((List.LoopUp(List.head,"Attention","Charlie Puth")));
 	}
 
 }
