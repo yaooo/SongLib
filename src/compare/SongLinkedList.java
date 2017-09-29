@@ -765,27 +765,27 @@ public class SongLinkedList {
 	public void DeleteNode(String sn, String an) {
 		Node prevptr=head;
 		Node ptr=prevptr.Next;
-		if(sn.compareToIgnoreCase(prevptr.GetSong())==0 && an.compareToIgnoreCase(prevptr.GetArtist())==0 && ptr!=null){
+		if(sn.equals(prevptr.GetSong()) && an.equals(prevptr.GetArtist()) && ptr!=null){
 			prevptr.Next=null;
 			head=ptr;
 		}
-		else if(ptr==null) {
-			if(sn.compareToIgnoreCase(prevptr.GetSong())==0 && an.compareToIgnoreCase(prevptr.GetArtist())==0) {
+		else if(sn.equals(prevptr.GetSong()) && an.equals(prevptr.GetArtist()) && ptr==null) {
 				head=null;
 				return;
-			}
 		}
 		else {
 			while(ptr!=null){
-				if(sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())==0) {
-					prevptr=prevptr.Next.Next;
+				if(sn.equals(ptr.GetSong())&& an.equals(ptr.GetArtist())){
+					prevptr.Next=ptr.Next;
 					ptr.Next=null;
 					return;
 				}
-				else if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())==0) {
+				else if(ptr.Next==null && sn.equals(ptr.GetSong()) && an.equals(ptr.GetArtist())) {
 					prevptr.Next=null;
+					return;
 				}
 				ptr=ptr.Next;
+				prevptr=prevptr.Next;
 			}
 		}
 		
@@ -813,10 +813,6 @@ public class SongLinkedList {
 	 */
 	
 public static void main(String[] args) throws IOException {
-		SongLinkedList List= new SongLinkedList();
-		List.PopulateList();
-		System.out.println(List.head);
-		//System.out.println((List.LoopUp(List.head,"Attention","Charlie Puth")));
 	}
 
 }

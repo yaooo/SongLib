@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -92,6 +94,14 @@ public class ListController {
 				e.printStackTrace();
 			}
 		});
+		delete.setOnAction(arg0 -> {
+			try {
+				handleDelete(arg0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		
 	}
 
@@ -127,7 +137,7 @@ public class ListController {
 		obsList.clear();
 		Node ptr=List.head;
 		while(ptr!=null) {
-			obsList.add(ptr.GetSong() +" , "+ptr.GetArtist());
+			obsList.add(ptr.GetSong() +" - "+ptr.GetArtist());
 			ptr=ptr.Next;
 		}
 		listView.setItems(obsList);
@@ -144,7 +154,7 @@ public class ListController {
 		obsList.clear();
 		Node ptr=List.head;
 		while(ptr!=null) {
-			obsList.add(ptr.GetSong() +" , "+ptr.GetArtist());
+			obsList.add(ptr.GetSong() +" - "+ptr.GetArtist());
 			ptr=ptr.Next;
 		}
 		listView.setItems(obsList);
@@ -154,7 +164,7 @@ public class ListController {
 		obsList.clear();
 		Node ptr=List.head;
 		while(ptr!=null) {
-			obsList.add(ptr.GetSong() +" , "+ptr.GetArtist());
+			obsList.add(ptr.GetSong() +" - "+ptr.GetArtist());
 			ptr=ptr.Next;
 		}
 		listView.setItems(obsList);
@@ -164,7 +174,7 @@ public class ListController {
 		obsList.clear();
 		Node ptr=List.head;
 		while(ptr!=null) {
-			obsList.add(ptr.GetSong() +" , "+ptr.GetArtist());
+			obsList.add(ptr.GetSong() +" - "+ptr.GetArtist());
 			ptr=ptr.Next;
 		}
 		listView.setItems(obsList);
@@ -181,7 +191,7 @@ public class ListController {
 		obsList.clear();
 		ptr=List.head;
 		while(ptr!=null) {
-			obsList.add(ptr.GetSong() +" , "+ptr.GetArtist());
+			obsList.add(ptr.GetSong() +" - "+ptr.GetArtist());
 			ptr=ptr.Next;
 		}
 		listView.setItems(obsList);
@@ -200,6 +210,19 @@ public class ListController {
 			add(songTxt.getText(),artTxt.getText(),albTxt.getText(),yerTxt.getText());
 		}
 		
+	}
+	private void handleDelete(ActionEvent event) throws IOException{
+		String s= listView.getSelectionModel().getSelectedItem();
+		String[] parts=s.split(Pattern.quote(" - "));
+		System.out.println(parts[0]+parts[1]);
+		delete(parts[0],parts[1]);
+	}
+	private void error() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error Dialog");
+		alert.setHeaderText("Look, an Error Dialog");
+		alert.setContentText("Ooops, there was an error!");
+		alert.showAndWait();
 	}
 	public boolean isNumeric(String k){
 		for(int i=0;i<k.length();i++) {
