@@ -3,7 +3,7 @@ package compare;
 import java.io.*;
 
 public class SongLinkedList {
-	Node head;
+	public Node head;
 	public SongLinkedList() {
 		head=null;
 	}
@@ -80,7 +80,7 @@ public class SongLinkedList {
 						if(sn.compareToIgnoreCase(prevptr.GetSong())>0) {
 							Node Insert= new Node(sn,an);
 							head.Next=Insert;
-							head.Next=null;
+							Insert.Next=null;
 							inserted=1;
 						}
 					}
@@ -718,7 +718,7 @@ public class SongLinkedList {
 		int artistread=0;
 		while(num!=-1) {
 			ch=(char)num;
-			if(ch==',') {
+			if(ch=='-') {
 				if(songread==0) {
 					songread=1;
 				}
@@ -762,13 +762,47 @@ public class SongLinkedList {
 			num=SongReader.read();
 		}
 	}
+	public void DeleteNode(String sn, String an) {
+		Node prevptr=head;
+		Node ptr=prevptr.Next;
+		if(sn.compareToIgnoreCase(prevptr.GetSong())==0 && an.compareToIgnoreCase(prevptr.GetArtist())==0 && ptr!=null){
+			prevptr.Next=null;
+			head=ptr;
+		}
+		else if(ptr==null) {
+			if(sn.compareToIgnoreCase(prevptr.GetSong())==0 && an.compareToIgnoreCase(prevptr.GetArtist())==0) {
+				head=null;
+				return;
+			}
+		}
+		else {
+			while(ptr!=null){
+				if(sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())==0) {
+					prevptr=prevptr.Next.Next;
+					ptr.Next=null;
+					return;
+				}
+				else if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())==0) {
+					prevptr.Next=null;
+				}
+				ptr=ptr.Next;
+			}
+		}
+		
+		
+	}
 	public void WriteList()throws IOException{
 		File SongList= new File("SongList.txt");
 		FileWriter Write=new FileWriter(SongList);
 		BufferedWriter SongWriter=new BufferedWriter(Write);
 		Node ptr=head;
 		while(ptr!=null){
-			SongWriter.write(ptr.GetSong()+","+ptr.GetArtist()+"\r\n");
+			if(ptr.GetYear()==0) {
+				SongWriter.write(ptr.GetSong()+"-"+ptr.GetArtist()+"-"+ptr.GetAlbum()+"-"+"\r\n");
+			}
+			else {
+				SongWriter.write(ptr.GetSong()+"-"+ptr.GetArtist()+"-"+ptr.GetAlbum()+"-"+ptr.GetYear()+"\r\n");
+			}
 			ptr=ptr.Next;
 		}
 		SongWriter.close();
@@ -776,7 +810,6 @@ public class SongLinkedList {
 	public static void main(String[] args) throws IOException {
 		SongLinkedList List= new SongLinkedList();
 		List.PopulateList();
-		List.AddNode("placeholder", "sagar");
 		List.PrintList();
 		List.WriteList();
 	}

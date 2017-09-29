@@ -5,7 +5,7 @@ public class Node {
 	private String SongName;
 	private String Album ;
 	private int Year;
-	Node Next;
+	public Node Next;
 	
 	public Node(String sn, String an){
 		ArtistName=an;
