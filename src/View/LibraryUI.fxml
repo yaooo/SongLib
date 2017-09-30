@@ -93,7 +93,7 @@ fx:controller="View.ListController">
             <Font name="Wingdings" size="24.0" />
          </font>
       </Text>
-      <Button fx:id="edit" defaultButton="true" layoutX="424.0" layoutY="355.0" mnemonicParsing="false" text="Edit">
+      <Button fx:id="edit" defaultButton="true" layoutX="424.0" layoutY="355.0" mnemonicParsing="false" text="Edit" onAction="#handleEdit">
          <font>
             <Font size="18.0" />
          </font>
