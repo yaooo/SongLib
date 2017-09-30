@@ -85,15 +85,26 @@ public class ListController {
 		}
 		listView.getSelectionModel().selectedIndexProperty().addListener(
 	    (obs, oldVal, newVal) -> 
-	               showItemInputDialog(stage));
+	    {try{
+	    	showItemInputDialog(stage);
+	    }
+	    catch(NullPointerException e) {
+	    	//Do Nothing program works fine.
+	    }
+	    });
+		
+		
 		add.setOnAction(arg0 -> {
-			try {
-				handleAdd(arg0);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			handleAdd(arg0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch(NullPointerException e) {
+			//Do Nothing program works fine.
+		}
 		});
+		
 		delete.setOnAction(arg0 -> {
 			try {
 				handleDelete(arg0);
@@ -107,6 +118,7 @@ public class ListController {
 
 	private Object showItemInputDialog(Stage stage) {
 		String s= listView.getSelectionModel().getSelectedItem();
+		if(!(s.equals(null))) {
 		String[] parts=s.split(Pattern.quote(" - "));
 		Node ptr=LoopUp(List.head, parts[0], parts[1]);
 		String yearNumber = "";
@@ -116,7 +128,7 @@ public class ListController {
 		if(ptr.GetYear() != 0)
 			yearNumber += ptr.GetYear();
 		year.setText(yearNumber);
-		
+		}
 		
 		return null;
 	}
@@ -132,7 +144,11 @@ public class ListController {
 		return null;
 	}
 	public void add(String sn, String an)throws IOException {
-
+		if(List.InList(sn,an)) {
+			error2();
+			return;
+		}
+		
 		List.AddNode(sn, an);
 		obsList.clear();
 		Node ptr=List.head;
@@ -144,6 +160,10 @@ public class ListController {
 		
 	}
 	public void add(String sn,String an,String ab)throws IOException{
+		if(List.InList(sn,an)) {
+			error2();
+			return;
+		}
 		if(isNumeric(ab)) {
 			List.AddNode(sn,an,Integer.parseInt(ab));
 		}
@@ -160,6 +180,10 @@ public class ListController {
 		listView.setItems(obsList);
 		}
 	public void add(String sn,String an,String ab,String y) {
+		if(List.InList(sn,an)) {
+			error2();
+			return;
+		}
 		List.AddNode(sn,an,ab,Integer.parseInt(y));
 		obsList.clear();
 		Node ptr=List.head;
@@ -197,7 +221,11 @@ public class ListController {
 		listView.setItems(obsList);
 	}
 	private void handleAdd(ActionEvent event) throws IOException {
-		if((yerTxt.getText().equals(null) || yerTxt.getText().equals("")) && (albTxt.getText().equals(null))||albTxt.getText().equals("")){
+		if(songTxt.getText().equals("") || artTxt.getText().equals("")) {
+			error();
+			return;
+		}
+		if((yerTxt.getText().equals(null) || yerTxt.getText().equals("")) && ((albTxt.getText().equals(null))||albTxt.getText().equals(""))){
 			add(songTxt.getText(), artTxt.getText());
 		}
 		else if(!((albTxt.getText().equals(null) || albTxt.getText().equals(""))) && (yerTxt.getText().equals(null)) || yerTxt.getText().equals("")){
@@ -219,9 +247,16 @@ public class ListController {
 	}
 	private void error() {
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error Dialog");
-		alert.setHeaderText("Look, an Error Dialog");
-		alert.setContentText("Ooops, there was an error!");
+		alert.setTitle("Error");
+		alert.setHeaderText("Input error");
+		alert.setContentText("Must have an song and artist name!");
+		alert.showAndWait();
+	}
+	private void error2() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText("Duplicate error");
+		alert.setContentText("Song is already in the list!");
 		alert.showAndWait();
 	}
 	public boolean isNumeric(String k){
@@ -232,6 +267,5 @@ public class ListController {
 		}
 		return true;
 	}
-
 	 
 }

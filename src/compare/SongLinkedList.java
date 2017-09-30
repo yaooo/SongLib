@@ -807,10 +807,17 @@ public class SongLinkedList {
 		}
 		SongWriter.close();
 	}
-	/**
-	 * Return null if not in the list, otherwise return the node where the song is
-	 * stored
-	 */
+	public boolean InList(String sn,String an) {
+		Node ptr=head;
+		while(ptr!=null) {
+			if(ptr.GetSong().equalsIgnoreCase(sn) && ptr.GetArtist().equalsIgnoreCase(an)) {
+				return true;
+			}
+			ptr=ptr.Next;
+		}
+		return false;
+		
+	}
 	
 public static void main(String[] args) throws IOException {
 	}
