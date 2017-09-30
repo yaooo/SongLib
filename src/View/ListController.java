@@ -2,6 +2,7 @@ package View;
 
 import compare.Node;
 import compare.SongLinkedList;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,7 +44,11 @@ public class ListController {
 	private TextField yerTxt;
 	@FXML 
 	private TextField  albTxt;
-
+	@FXML
+	public void exitApplication(ActionEvent event) {
+		Platform.exit();
+	}
+	
 	@FXML
 	private void handleAddButton(ActionEvent event) {
 		if (event.getSource() == add) {
@@ -170,7 +175,6 @@ public class ListController {
 		else {
 			List.AddNode(sn,an,ab);
 		}
-		List.AddNode(sn, an, ab);
 		obsList.clear();
 		Node ptr=List.head;
 		while(ptr!=null) {
@@ -267,5 +271,7 @@ public class ListController {
 		}
 		return true;
 	}
-	 
+	public void writeFile() throws IOException{
+		List.WriteList();
+	}
 }
