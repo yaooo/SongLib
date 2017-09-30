@@ -343,25 +343,31 @@ public class ListController {
 
 					String validation = checkEditedInputFormat(editSong.getText(), editArtist.getText(),
 							editAlbum.getText(), editYear.getText());
-
+					System.out.println(validation);
 					if (validation != null) {
+						System.out.println("Hello");
 						error(validation);
+						return false;
 					}
-
-					return false;
+					return true;
 				}
-				return true;
+				return false;
 
 			});
 
 			Optional<Boolean> result = dialog.showAndWait();
+			System.out.println(result.get());
+			if (result.get()) {
+				// Delete the old node
+				List.DeleteNode(title.getText(), artist.getText());
+				try {
+					add(editSong.getText(), editArtist.getText());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-			if (result.isPresent()) {
-				// Update the linked List
-				Node song = LoopUp(List.head, title.getText(), artist.getText());
-				song.UpdateSong(editSong.getText());
-				song.UpdateArtist(editArtist.getText());
-
+				Node song = LoopUp(List.head, editSong.getText(), editArtist.getText());
 				if (editAlbum.getText() != null) {
 					if (editAlbum.getText().trim().length() > 0) {
 						song.UpdateAlbum(editAlbum.getText());
@@ -375,7 +381,7 @@ public class ListController {
 						}
 					}
 				}
-
+				listView.getSelectionModel().select(0);
 			}
 		}
 
@@ -383,12 +389,16 @@ public class ListController {
 	}
 
 	private String checkEditedInputFormat(String title, String artist, String album, String year) {
+
+		System.out.println(title + artist + album + year);
+
 		if (title.trim().isEmpty())
 			return "Edited title is empty.";
 		if (artist.trim().isEmpty())
 			return "Edited artist is empty.";
 		Node ptr = LoopUp(List.head, title, artist);
-		if (ptr == null)
+
+		if (ptr != null)
 			return "Title and artist already exist in the library.";
 		if (year.length() != 4 && !isNumeric(year)) {
 			return "Edited year has to be a four-difit number.";
