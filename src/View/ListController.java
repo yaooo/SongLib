@@ -330,15 +330,12 @@ public class ListController {
 			// Request focus on the title field by default.
 			Platform.runLater(() -> editSong.requestFocus());
 
-			String title = "";
-			String artist = "";
-			String album = "";
-			String year = "";
-
-			title = editSong.getText();
-			artist = editArtist.getText();
-			album = editAlbum.getText();
-			year = editYear.getText();
+			/*
+			 * String title = ""; String artist = ""; String album = ""; String year = "";
+			 * 
+			 * title = editSong.getText(); artist = editArtist.getText(); album =
+			 * editAlbum.getText(); year = editYear.getText();
+			 */
 
 			dialog.setResultConverter(dialogButton -> {
 				if (dialogButton == OkayButtonType) {
@@ -360,7 +357,11 @@ public class ListController {
 			Optional<Boolean> result = dialog.showAndWait();
 
 			if (result.isPresent()) {
-				Node song = new Node(editSong.getText(), editArtist.getText());
+				// Update the linked List
+				Node song = LoopUp(List.head, title.getText(), artist.getText());
+				song.UpdateSong(editSong.getText());
+				song.UpdateArtist(editArtist.getText());
+
 				if (editAlbum.getText() != null) {
 					if (editAlbum.getText().trim().length() > 0) {
 						song.UpdateAlbum(editAlbum.getText());
@@ -374,6 +375,7 @@ public class ListController {
 						}
 					}
 				}
+
 			}
 		}
 
