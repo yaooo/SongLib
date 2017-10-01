@@ -51,24 +51,6 @@ public class ListController {
 	@FXML
 	private TextField albTxt;
 
-	@FXML
-	public void exitApplication(ActionEvent event) {
-		Platform.exit();
-	}
-
-	@FXML
-	private void handleAddButton(ActionEvent event) {
-		if (event.getSource() == add) {
-
-		}
-
-	}
-
-	@FXML
-	private void listViewSelection(ActionEvent event) {
-
-	}
-
 	static SongLinkedList List = new SongLinkedList();
 	private ObservableList<String> obsList = FXCollections.observableArrayList();
 	int titlecounter = 0;
@@ -126,6 +108,14 @@ public class ListController {
 	}
 
 	private Object showItemInputDialog(Stage stage) {
+		if (LinkedListLength(List) == 0) {
+			title.setText("title");
+			artist.setText("artist");
+			album.setText("album");
+			year.setText("year");
+			return null;
+		}
+
 		String s = listView.getSelectionModel().getSelectedItem();
 		if (!(s.equals(null))) {
 			String[] parts = s.split(Pattern.quote(" - "));
@@ -235,6 +225,7 @@ public class ListController {
 	}
 
 	private void handleAdd(ActionEvent event) throws IOException {
+
 		if (songTxt.getText().equals("") || artTxt.getText().equals("")) {
 			error();
 			return;
@@ -253,13 +244,32 @@ public class ListController {
 			add(songTxt.getText(), artTxt.getText(), albTxt.getText(), yerTxt.getText());
 		}
 
+		if (LinkedListLength(List) == 1) {
+			listView.getSelectionModel().select(0);
+		}
+		songTxt.clear();
+		artTxt.clear();
+		yerTxt.clear();
+		albTxt.clear();
 	}
 
 	private void handleDelete(ActionEvent event) throws IOException {
+		int length = LinkedListLength(List);
+		if (length == 0)
+			return;
+
+		int index = listView.getSelectionModel().getSelectedIndex();
+
 		String s = listView.getSelectionModel().getSelectedItem();
 		String[] parts = s.split(Pattern.quote(" - "));
 		System.out.println(parts[0] + parts[1]);
 		delete(parts[0], parts[1]);
+
+		if (index == length - 1) {
+			listView.getSelectionModel().select(0);
+		} else {
+			listView.getSelectionModel().select(index);
+		}
 	}
 
 	private void error() {
@@ -398,8 +408,8 @@ public class ListController {
 			return "Edited artist is empty.";
 		Node ptr = LoopUp(List.head, title, artist);
 
-		if (ptr != null)
-			return "Title and artist already exist in the library.";
+		// if (ptr != null)
+		// return "Title and artist already exist in the library.";
 		if (year.length() != 4 && !isNumeric(year)) {
 			return "Edited year has to be a four-difit number.";
 		}
@@ -412,5 +422,15 @@ public class ListController {
 		alert.setHeaderText("Input error");
 		alert.setContentText(message);
 		alert.showAndWait();
+	}
+
+	private int LinkedListLength(SongLinkedList node) {
+		int count = 0;
+		Node t = node.head;
+		while (t != null) {
+			count++;
+			t = t.Next;
+		}
+		return count;
 	}
 }

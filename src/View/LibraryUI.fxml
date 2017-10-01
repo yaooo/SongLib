@@ -10,15 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" 
-maxWidth="-Infinity" 
-minHeight="-Infinity" 
-minWidth="-Infinity" 
-prefHeight="407.0" 
-prefWidth="723.0" 
-xmlns="http://javafx.com/javafx/8.0.111" 
-xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="View.ListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ListController">
    <children>
       <Button fx:id="add" defaultButton="true" layoutX="650.0" layoutY="254.0" mnemonicParsing="false" text="Add">
          <font>
@@ -28,11 +20,11 @@ fx:controller="View.ListController">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <ListView layoutX="17.0" layoutY="53.0" prefHeight="300.0" prefWidth="462.0" />
-      <GridPane alignment="CENTER" layoutX="261.0" layoutY="54.0" prefHeight="300.0" prefWidth="218.0">
+      <ListView layoutX="17.0" layoutY="53.0" prefHeight="300.0" prefWidth="475.0" />
+      <GridPane alignment="CENTER" layoutX="261.0" layoutY="54.0" prefHeight="300.0" prefWidth="232.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="77.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="141.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="64.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="168.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
@@ -61,26 +53,10 @@ fx:controller="View.ListController">
                   <Font size="20.0" />
                </font>
             </Text>
-            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="title" GridPane.columnIndex="1">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text fx:id="artist" strokeType="OUTSIDE" strokeWidth="0.0" text="artist" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text fx:id="album" strokeType="OUTSIDE" strokeWidth="0.0" text="album" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" text="year" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
+            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="title" wrappingWidth="150.0" GridPane.columnIndex="1" />
+            <Text fx:id="artist" strokeType="OUTSIDE" strokeWidth="0.0" text="artist" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Text fx:id="album" strokeType="OUTSIDE" strokeWidth="0.0" text="album" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" text="year" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <ListView fx:id="listView" layoutX="17.0" layoutY="54.0" prefHeight="300.0" prefWidth="232.0" />
@@ -93,7 +69,7 @@ fx:controller="View.ListController">
             <Font name="Wingdings" size="24.0" />
          </font>
       </Text>
-      <Button fx:id="edit" defaultButton="true" layoutX="424.0" layoutY="355.0" mnemonicParsing="false" text="Edit" onAction="#handleEdit">
+      <Button fx:id="edit" defaultButton="true" layoutX="424.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleEdit" text="Edit">
          <font>
             <Font size="18.0" />
          </font>
