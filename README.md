@@ -1,5 +1,10 @@
 # README #
 
+
+ * author Sagar Patel
+ * author Yao Shi
+ * version 1.0
+
 Song library project for Rutgers cs 213 class.
 
 ### Summary ###

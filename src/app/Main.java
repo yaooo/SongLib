@@ -3,22 +3,26 @@ package app;
 import java.io.IOException;
 
 import View.ListController;
-import compare.SongLinkedList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * @author Sagar Patel
+ * @author Yao Shi
+ * @version 1.0
+ */
 public class Main extends Application {
 	ListController master;
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/View/LibraryUI.fxml"));
-		AnchorPane root = (AnchorPane)loader.load();
-		master=loader.getController();
+		AnchorPane root = (AnchorPane) loader.load();
+		master = loader.getController();
 		master.start(stage);
 		Scene scene = new Scene(root);
 
@@ -27,8 +31,9 @@ public class Main extends Application {
 		stage.setScene(scene);
 		stage.show();
 	}
+
 	@Override
-	public void stop()throws IOException{
+	public void stop() throws IOException {
 		master.writeFile();
 	}
 
