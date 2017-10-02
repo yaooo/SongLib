@@ -144,6 +144,19 @@ public class ListController {
 		return null;
 	}
 
+	private int LoopUpIndex(Node head, String song, String artist) {
+		Node temp = head;
+		int index = -1;
+		while (temp != null) {
+			index++;
+			if (song.equals(temp.GetSong()) && artist.equals(temp.GetArtist())) {
+				return index;
+			}
+			temp = temp.Next;
+		}
+		return index;
+	}
+
 	public void add(String sn, String an) throws IOException {
 		if (List.InList(sn, an)) {
 			error2();
@@ -246,6 +259,9 @@ public class ListController {
 
 		if (LinkedListLength(List) == 1) {
 			listView.getSelectionModel().select(0);
+		} else {
+			int newSongIndex = LoopUpIndex(List.head, songTxt.getText(), artTxt.getText());
+			listView.getSelectionModel().select(newSongIndex);
 		}
 		songTxt.clear();
 		artTxt.clear();
@@ -262,7 +278,7 @@ public class ListController {
 
 		String s = listView.getSelectionModel().getSelectedItem();
 		String[] parts = s.split(Pattern.quote(" - "));
-		System.out.println(parts[0] + parts[1]);
+		// System.out.println(parts[0] + parts[1]);
 		delete(parts[0], parts[1]);
 
 		if (index == length - 1) {
@@ -303,7 +319,7 @@ public class ListController {
 
 	public Boolean handleEdit(ActionEvent event) {
 		// Create the custom dialog.
-		if (event.getSource() == edit) {
+		if (event.getSource() == edit && List.head != null) {
 
 			Dialog<Boolean> dialog = new Dialog<>();
 			dialog.setTitle("Edit Song details.");
@@ -353,9 +369,9 @@ public class ListController {
 
 					String validation = checkEditedInputFormat(editSong.getText(), editArtist.getText(),
 							editAlbum.getText(), editYear.getText());
-					System.out.println(validation);
+					// System.out.println(validation);
 					if (validation != null) {
-						System.out.println("Hello");
+						// System.out.println("Hello");
 						error(validation);
 						return false;
 					}
@@ -366,7 +382,7 @@ public class ListController {
 			});
 
 			Optional<Boolean> result = dialog.showAndWait();
-			System.out.println(result.get());
+			// System.out.println(result.get());
 			if (result.get()) {
 				// Delete the old node
 				List.DeleteNode(title.getText(), artist.getText());
@@ -400,7 +416,7 @@ public class ListController {
 
 	private String checkEditedInputFormat(String title, String artist, String album, String year) {
 
-		System.out.println(title + artist + album + year);
+		// System.out.println(title + artist + album + year);
 
 		if (title.trim().isEmpty())
 			return "Edited title is empty.";
