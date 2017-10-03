@@ -204,6 +204,7 @@ public class ListController {
 			return;
 		}
 		List.AddNode(sn, an, ab, Integer.parseInt(y));
+		List.DupeFailSafe();
 		obsList.clear();
 		Node ptr = List.head;
 		while (ptr != null) {
