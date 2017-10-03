@@ -55,10 +55,10 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="title" wrappingWidth="150.0" GridPane.columnIndex="1" />
-            <Text fx:id="artist" strokeType="OUTSIDE" strokeWidth="0.0" text="artist" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Text fx:id="album" strokeType="OUTSIDE" strokeWidth="0.0" text="album" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" text="year" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="150.0" GridPane.columnIndex="1" />
+            <Text fx:id="artist" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Text fx:id="album" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <ListView fx:id="listView" layoutX="17.0" layoutY="54.0" prefHeight="300.0" prefWidth="232.0" />

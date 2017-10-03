@@ -114,10 +114,10 @@ public class ListController {
 
 	private Object showItemInputDialog(Stage stage) {
 		if (LinkedListLength(List) == 0) {
-			title.setText("title");
-			artist.setText("artist");
-			album.setText("album");
-			year.setText("year");
+			title.setText("");
+			artist.setText("");
+			album.setText("");
+			year.setText("");
 			return null;
 		}
 
@@ -288,7 +288,7 @@ public class ListController {
 		delete(parts[0], parts[1]);
 
 		if (index == length - 1) {
-			listView.getSelectionModel().select(0);
+			listView.getSelectionModel().select(length - 2);
 		} else {
 			listView.getSelectionModel().select(index);
 		}
@@ -432,8 +432,8 @@ public class ListController {
 
 		// if (ptr != null)
 		// return "Title and artist already exist in the library.";
-		if (year.length() != 4 && !isNumeric(year)) {
-			return "Edited year has to be a four-difit number.";
+		if (year.length() != 4 || !isNumeric(year)) {
+			return "Edited year has to be a four-digit number.";
 		}
 		return null;
 	}
