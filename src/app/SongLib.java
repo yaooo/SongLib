@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  * @author Yao Shi
  * @version 1.0
  */
-public class Main extends Application {
+public class SongLib extends Application {
 	ListController master;
 
 	@Override

@@ -245,6 +245,9 @@ public class ListController {
 
 	private void handleAdd(ActionEvent event) throws IOException {
 
+		if (!confirm())
+			return;
+
 		if (songTxt.getText().equals("") || artTxt.getText().equals("")) {
 			error();
 			return;
@@ -285,6 +288,10 @@ public class ListController {
 		String s = listView.getSelectionModel().getSelectedItem();
 		String[] parts = s.split(Pattern.quote(" - "));
 		// System.out.println(parts[0] + parts[1]);
+
+		if (!confirm())
+			return;
+
 		delete(parts[0], parts[1]);
 
 		if (index == length - 1) {
@@ -428,10 +435,12 @@ public class ListController {
 			return "Edited title is empty.";
 		if (artist.trim().isEmpty())
 			return "Edited artist is empty.";
-		Node ptr = LoopUp(List.head, title, artist);
+		// Node ptr = LoopUp(List.head, title, artist);
 
 		// if (ptr != null)
 		// return "Title and artist already exist in the library.";
+		if (year.trim().length() == 0)
+			return null;
 		if (year.length() != 4 || !isNumeric(year)) {
 			return "Edited year has to be a four-digit number.";
 		}
@@ -454,5 +463,18 @@ public class ListController {
 			t = t.Next;
 		}
 		return count;
+	}
+
+	private boolean confirm() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setContentText("Do you want to make the change?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

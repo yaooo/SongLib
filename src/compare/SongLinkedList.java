@@ -20,756 +20,790 @@ public class SongLinkedList {
 	}
 
 	public void AddNode(String sn, String an) {
-		//If the head is null we add the starting node
-		if(head==null) {
-			head= new Node(sn,an);
-			head.Next=null;
-		}
-		else {
-			//if the song inserted is alphabetically lower than our first we insert it first
-			if(sn.compareToIgnoreCase(head.GetSong())<0) {
-				Node Insert=new Node(sn,an);
-				Insert.Next=head;
-				head=Insert;
+		// If the head is null we add the starting node
+		if (head == null) {
+			head = new Node(sn, an);
+			head.Next = null;
+		} else {
+			// if the song inserted is alphabetically lower than our first we insert it
+			// first
+			if (sn.compareToIgnoreCase(head.GetSong()) < 0) {
+				Node Insert = new Node(sn, an);
+				Insert.Next = head;
+				head = Insert;
 			}
-			//If the first song names are equal we sort by artist names instead
-			else if(sn.compareToIgnoreCase(head.GetSong())==0) {
-				//If the artist name is alphabetically lower
-				if(an.compareToIgnoreCase(head.GetArtist())<0) {
-					Node Insert=new Node(sn,an);
-					Insert.Next=head;
-					head=Insert;
+			// If the first song names are equal we sort by artist names instead
+			else if (sn.compareToIgnoreCase(head.GetSong()) == 0) {
+				// If the artist name is alphabetically lower
+				if (an.compareToIgnoreCase(head.GetArtist()) < 0) {
+					Node Insert = new Node(sn, an);
+					Insert.Next = head;
+					head = Insert;
 				}
-				//if there is only one song and it is alphabetically higher we insert it at the end.
-				else if(head.Next==null) {
-					Node Insert=new Node(sn,an);
-					head.Next=Insert;
+				// if there is only one song and it is alphabetically higher we insert it at the
+				// end.
+				else if (head.Next == null) {
+					Node Insert = new Node(sn, an);
+					head.Next = Insert;
 				}
-				//if it is alphabetically higher and the head is the only duplicate song we insert it after the head
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())!=0) {
-					Node ptr=head.Next;
-					InsertBefore(head,ptr,sn,an);
+				// if it is alphabetically higher and the head is the only duplicate song we
+				// insert it after the head
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) != 0) {
+					Node ptr = head.Next;
+					InsertBefore(head, ptr, sn, an);
 				}
-				//Middle Insertion Edge Case
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0 && an.compareToIgnoreCase(head.Next.GetArtist())<0) {
-					InsertBefore(head,head.Next,sn,an);
+				// Middle Insertion Edge Case
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0
+						&& an.compareToIgnoreCase(head.Next.GetArtist()) < 0) {
+					InsertBefore(head, head.Next, sn, an);
 				}
-				//Dealing with inserting a song with many duplicate names
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0) {
-					Node ptr=head.Next;
-					Node prevptr=head;
-					int inserted=0;
-					//if the artist name is in the middle
-					while(ptr.Next!=null && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-						if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-							InsertBefore(prevptr,ptr,sn,an);
-							inserted=1;
+				// Dealing with inserting a song with many duplicate names
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0) {
+					Node ptr = head.Next;
+					Node prevptr = head;
+					int inserted = 0;
+					// if the artist name is in the middle
+					while (ptr.Next != null && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+						if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an);
+							inserted = 1;
 							break;
 						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
 					}
-					//insertion edge case
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an);
-						inserted=1;
+					// insertion edge case
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an);
+						inserted = 1;
 					}
-					//insertion edge case
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())<0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an);
-						inserted=1;
+					// insertion edge case
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) == 0
+							&& an.compareToIgnoreCase(ptr.GetArtist()) < 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an);
+						inserted = 1;
 					}
-					//if the artist name is at the end of the list
-					if(ptr.Next==null && inserted!=1) {
-						InsertAfter(ptr,sn,an);
-						inserted=1;
+					// if the artist name is at the end of the list
+					if (ptr.Next == null && inserted != 1) {
+						InsertAfter(ptr, sn, an);
+						inserted = 1;
 					}
-					//if the artist name is in the middle of duplicate names
-					else if(ptr.Next!=null && inserted!=1) {
-						InsertBefore(prevptr,ptr,sn,an);
-						inserted=1;
-					}
-				}
-			}
-			else{
-				int inserted=0;
-				Node ptr=head;
-				ptr=ptr.Next;
-				Node prevptr=head;
-				//if the head is the only song currently in the list we decide where to insert the new song
-				if(prevptr==head && prevptr.Next==null){
-					if(sn.compareToIgnoreCase(prevptr.GetSong())<0) {
-						Node Insert= new Node(sn, an);
-						head.Next=Insert;
-						Insert.Next= null;
-						inserted=1;
-					}
-					if(sn.compareToIgnoreCase(prevptr.GetSong())>0) {
-						Node Insert= new Node(sn,an);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
+					// if the artist name is in the middle of duplicate names
+					else if (ptr.Next != null && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an);
+						inserted = 1;
 					}
 				}
-				else {
-					//Inserting the new song in the middle of the list
-					while(ptr.Next!=null) {
-						if(sn.compareToIgnoreCase(ptr.GetSong())<0) {
-							InsertBefore(prevptr,ptr,sn,an);
-							inserted=1;
+			} else {
+				int inserted = 0;
+				Node ptr = head;
+				ptr = ptr.Next;
+				Node prevptr = head;
+				// if the head is the only song currently in the list we decide where to insert
+				// the new song
+				if (prevptr == head && prevptr.Next == null) {
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) < 0) {
+						Node Insert = new Node(sn, an);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) > 0) {
+						Node Insert = new Node(sn, an);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+				} else {
+					// Inserting the new song in the middle of the list
+					while (ptr.Next != null) {
+						if (sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an);
+							inserted = 1;
 							break;
 						}
-						//If the song name is the same we go alphabetically by artist
-						else if(sn.compareToIgnoreCase(ptr.GetSong())==0) {
-							//If the artist name is the alphabetically lowest 
-							if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-								InsertBefore(prevptr,ptr,sn,an);
-								inserted=1;
+						// If the song name is the same we go alphabetically by artist
+						else if (sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+							// If the artist name is the alphabetically lowest
+							if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+								InsertBefore(prevptr, ptr, sn, an);
+								inserted = 1;
+								break;
+							} else if (ptr.Next == null && an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+								InsertAfter(ptr, sn, an);
+								inserted = 1;
 								break;
 							}
-							else if(ptr.Next==null && an.compareToIgnoreCase(ptr.GetArtist())>0) {
-								InsertAfter(ptr,sn,an);
-								inserted=1;
+							// If there is only one comparison to be done and it comes after the other
+							// duplicate song
+							else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) != 0) {
+								ptr = ptr.Next;
+								prevptr = prevptr.Next;
+								InsertBefore(prevptr, ptr, sn, an);
+								inserted = 1;
 								break;
-							}
-							//If there is only one comparison to be done and it comes after the other duplicate song
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())!=0) {
-								ptr=ptr.Next;
-								prevptr=prevptr.Next;
-								InsertBefore(prevptr,ptr,sn,an);
-								inserted=1;
+							} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) == 0
+									&& an.compareToIgnoreCase(ptr.Next.GetArtist()) < 0) {
+								InsertBefore(ptr, ptr.Next, sn, an);
+								inserted = 1;
 								break;
-							}
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())==0 && an.compareToIgnoreCase(ptr.Next.GetArtist())<0) {
-								InsertBefore(ptr,ptr.Next,sn,an);
-								inserted=1;
-								break;
-							}
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())==0) {
-								Node ptr2=ptr.Next;
-								Node prevptr2=ptr;
-								//If the song is inserted in the middle
-								while(ptr2.Next!=null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && inserted!=1) {
-									if(an.compareToIgnoreCase(ptr2.GetArtist())<0) {
-										InsertBefore(prevptr2,ptr2,sn,an);
-										inserted=1;
+							} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) == 0) {
+								Node ptr2 = ptr.Next;
+								Node prevptr2 = ptr;
+								// If the song is inserted in the middle
+								while (ptr2.Next != null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& inserted != 1) {
+									if (an.compareToIgnoreCase(ptr2.GetArtist()) < 0) {
+										InsertBefore(prevptr2, ptr2, sn, an);
+										inserted = 1;
 										break;
 									}
-									ptr2=ptr2.Next;
-									prevptr2=prevptr2.Next;
+									ptr2 = ptr2.Next;
+									prevptr2 = prevptr2.Next;
 								}
-								//Insertion Edge Case
-								if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-									InsertBefore(prevptr,ptr,sn,an);
-									inserted=1;
+								// Insertion Edge Case
+								if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+									InsertBefore(prevptr, ptr, sn, an);
+									inserted = 1;
 									break;
 								}
-								//insertion edge case
-								if(ptr2.Next==null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && an.compareToIgnoreCase(ptr2.GetArtist())<0 && inserted!=1){
-									InsertBefore(prevptr2,ptr2,sn,an);
-									inserted=1;
+								// insertion edge case
+								if (ptr2.Next == null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& an.compareToIgnoreCase(ptr2.GetArtist()) < 0 && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an);
+									inserted = 1;
 									break;
 								}
-								//If the song is inserted last
-								if(ptr2.Next==null && inserted!=1) {
-									InsertAfter(ptr2,sn,an);
-									inserted=1;
+								// If the song is inserted last
+								if (ptr2.Next == null && inserted != 1) {
+									InsertAfter(ptr2, sn, an);
+									inserted = 1;
 									break;
 								}
-								//If the song is inserted in the middle of the names
-								else if(ptr2.Next!=null && inserted!=1) {
-									InsertBefore(prevptr2,ptr2,sn,an);
-									inserted=1;
+								// If the song is inserted in the middle of the names
+								else if (ptr2.Next != null && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an);
+									inserted = 1;
 									break;
 								}
 
 							}
-							
+
 						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
 					}
 				}
-				
-				//If the song is last and also a duplicate
-				if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-					if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-						InsertBefore(prevptr,ptr,sn,an);
+
+				// If the song is last and also a duplicate
+				if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+					if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+						InsertBefore(prevptr, ptr, sn, an);
+					} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+						InsertAfter(ptr, sn, an);
 					}
-					else if(an.compareToIgnoreCase(ptr.GetArtist())>0) {
-						InsertAfter(ptr,sn,an);
-					}
 				}
-				//if the song is the second to last in the list alphabetically
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())<0) {
-					InsertBefore(prevptr,ptr,sn,an);
+				// if the song is the second to last in the list alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+					InsertBefore(prevptr, ptr, sn, an);
 				}
-				//if the song is the last song alphabetically 
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())>0) {
-					InsertAfter(ptr,sn,an);
+				// if the song is the last song alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) > 0) {
+					InsertAfter(ptr, sn, an);
 				}
-				
+
 			}
-			
-		}
-}
-	public void AddNode(String sn, String an,String ab) {
-		//If the head is null we add the starting node
-		if(head==null) {
-			head= new Node(sn,an,ab);
-			head.Next=null;
-		}
-		else {
-			//if the song inserted is alphabetically lower than our first we insert it first
-			if(sn.compareToIgnoreCase(head.GetSong())<0) {
-				Node Insert=new Node(sn,an,ab);
-				Insert.Next=head;
-				head=Insert;
-			}
-			//If the first song names are equal we sort by artist names instead
-			else if(sn.compareToIgnoreCase(head.GetSong())==0) {
-				//If the artist name is alphabetically lower
-				if(an.compareToIgnoreCase(head.GetArtist())<0) {
-					Node Insert=new Node(sn,an,ab);
-					Insert.Next=head;
-					head=Insert;
-				}
-				//if there is only one song and it is alphabetically higher we insert it at the end.
-				else if(head.Next==null) {
-					Node Insert=new Node(sn,an,ab);
-					head.Next=Insert;
-				}
-				//if it is alphabetically higher and the head is the only duplicate song we insert it after the head
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())!=0) {
-					Node ptr=head.Next;
-					InsertBefore(head,ptr,sn,an,ab);
-				}
-				//Middle Insertion Edge Case
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0 && an.compareToIgnoreCase(head.Next.GetArtist())<0) {
-					InsertBefore(head,head.Next,sn,an,ab);
-				}
-				//Dealing with inserting a song with many duplicate names
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0) {
-					Node ptr=head.Next;
-					Node prevptr=head;
-					int inserted=0;
-					//if the artist name is in the middle
-					while(ptr.Next!=null && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-						if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-							InsertBefore(prevptr,ptr,sn,an,ab);
-							inserted=1;
-							break;
-						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
-					}
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an,ab);
-						inserted=1;
-					}
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())<0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an,ab);
-						inserted=1;
-					}
-					//if the artist name is at the end of the list
-					if(ptr.Next==null && inserted!=1) {
-						InsertAfter(ptr,sn,an,ab);
-						inserted=1;
-					}
-					//if the artist name is in the middle of duplicate names
-					else if(ptr.Next!=null && inserted!=1) {
-						InsertBefore(prevptr,ptr,sn,an,ab);
-						inserted=1;
-					}
-				}
-			}
-			else{
-				int inserted=0;
-				Node ptr=head;
-				ptr=ptr.Next;
-				Node prevptr=head;
-				//if the head is the only song currently in the list we decide where to insert the new song
-				if(prevptr==head && prevptr.Next==null){
-					if(sn.compareToIgnoreCase(prevptr.GetSong())<0) {
-						Node Insert=new Node(sn,an,ab);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
-					}
-					if(sn.compareToIgnoreCase(prevptr.GetSong())>0) {
-						Node Insert=new Node(sn,an,ab);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
-					}
-				}
-				else {
-					//Inserting the new song in the middle of the list
-					while(ptr.Next!=null) {
-						if(sn.compareToIgnoreCase(ptr.GetSong())<0) {
-							InsertBefore(prevptr,ptr,sn,an,ab);
-							inserted=1;
-							break;
-						}
-						//If the song name is the same we go alphabetically by artist
-						else if(sn.compareToIgnoreCase(ptr.GetSong())==0) {
-							//If the song is the alphabetically lowest 
-							if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-								InsertBefore(prevptr,ptr,sn,an,ab);
-								inserted=1;
-								break;
-							}
-							else if(ptr.Next==null && an.compareToIgnoreCase(ptr.GetArtist())>0) {
-								InsertAfter(ptr,sn,an,ab);
-								inserted=1;
-								break;
-							}
-							//If there is only one comparison to be done and it comes after the other duplicate song
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())!=0) {
-								ptr=ptr.Next;
-								prevptr=prevptr.Next;
-								InsertBefore(prevptr,ptr,sn,an,ab);
-								inserted=1;
-								break;
-							}
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())==0) {
-								Node ptr2=ptr.Next;
-								Node prevptr2=ptr;
-								//If the song is inserted in the middle
-								while(ptr2.Next!=null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && inserted!=1) {
-									if(an.compareToIgnoreCase(ptr2.GetArtist())<0) {
-										InsertBefore(prevptr2,ptr2,sn,an,ab);
-										inserted=1;
-										break;
-									}
-									ptr2=ptr2.Next;
-									prevptr2=prevptr2.Next;
-								}
-								//Insertion Edge Case
-								if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-									InsertBefore(prevptr,ptr,sn,an,ab);
-									inserted=1;
-									break;
-								}
-								//insertion edge case
-								if(ptr2.Next==null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && an.compareToIgnoreCase(ptr2.GetArtist())<0 && inserted!=1){
-									InsertBefore(prevptr2,ptr2,sn,an,ab);
-									inserted=1;
-									break;
-								}
-								//If the song is inserted last
-								if(ptr2.Next==null && inserted!=1) {
-									InsertAfter(ptr2,sn,an,ab);
-									inserted=1;
-									break;
-								}
-								//If the song is inserted in the middle of the names
-								else if(ptr2.Next!=null && inserted!=1) {
-									InsertBefore(prevptr2,ptr2,sn,an,ab);
-									inserted=1;
-									break;
-								}
-	
-							}
-							
-						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
-					}
-				}
-				
-				//If the song is last and also a duplicate
-				if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-					if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-						InsertBefore(prevptr,ptr,sn,an,ab);
-					}
-					else if(an.compareToIgnoreCase(ptr.GetArtist())>0) {
-						InsertAfter(ptr,sn,an,ab);
-					}
-				}
-				//if the song is the second to last in the list alphabetically
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())<0) {
-					InsertBefore(prevptr,ptr,sn,an,ab);
-				}
-				//if the song is the last song alphabetically 
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())>0) {
-					InsertAfter(ptr,sn,an,ab);
-				}
-				
-			}
-			
+
 		}
 	}
-	public void AddNode(String sn, String an,String ab,int y) {
-		//If the head is null we add the starting node
-		if(head==null) {
-			head= new Node(sn,an,ab,y);
-			head.Next=null;
-		}
-		else {
-			//if the song inserted is alphabetically lower than our first we insert it first
-			if(sn.compareToIgnoreCase(head.GetSong())<0) {
-				Node Insert=new Node(sn,an,ab,y);
-				Insert.Next=head;
-				head=Insert;
+
+	public void AddNode(String sn, String an, String ab) {
+		// If the head is null we add the starting node
+		if (head == null) {
+			head = new Node(sn, an, ab);
+			head.Next = null;
+		} else {
+			// if the song inserted is alphabetically lower than our first we insert it
+			// first
+			if (sn.compareToIgnoreCase(head.GetSong()) < 0) {
+				Node Insert = new Node(sn, an, ab);
+				Insert.Next = head;
+				head = Insert;
 			}
-			//If the first song names are equal we sort by artist names instead
-			else if(sn.compareToIgnoreCase(head.GetSong())==0) {
-				//If the artist name is alphabetically lower
-				if(an.compareToIgnoreCase(head.GetArtist())<0) {
-					Node Insert=new Node(sn,an,ab,y);
-					Insert.Next=head;
-					head=Insert;
+			// If the first song names are equal we sort by artist names instead
+			else if (sn.compareToIgnoreCase(head.GetSong()) == 0) {
+				// If the artist name is alphabetically lower
+				if (an.compareToIgnoreCase(head.GetArtist()) < 0) {
+					Node Insert = new Node(sn, an, ab);
+					Insert.Next = head;
+					head = Insert;
 				}
-				//if there is only one song and it is alphabetically higher we insert it at the end.
-				else if(head.Next==null) {
-					Node Insert=new Node(sn,an,ab,y);
-					head.Next=Insert;
+				// if there is only one song and it is alphabetically higher we insert it at the
+				// end.
+				else if (head.Next == null) {
+					Node Insert = new Node(sn, an, ab);
+					head.Next = Insert;
 				}
-				//if it is alphabetically higher and the head is the only duplicate song we insert it after the head
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())!=0) {
-					Node ptr=head.Next;
-					InsertBefore(head,ptr,sn,an,ab,y);
+				// if it is alphabetically higher and the head is the only duplicate song we
+				// insert it after the head
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) != 0) {
+					Node ptr = head.Next;
+					InsertBefore(head, ptr, sn, an, ab);
 				}
-				//Middle Insertion edge case
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0 && an.compareToIgnoreCase(head.Next.GetArtist())<0) {
-					InsertBefore(head,head.Next,sn,an,ab,y);
+				// Middle Insertion Edge Case
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0
+						&& an.compareToIgnoreCase(head.Next.GetArtist()) < 0) {
+					InsertBefore(head, head.Next, sn, an, ab);
 				}
-				//Dealing with inserting a song with many duplicate names
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0) {
-					Node ptr=head.Next;
-					Node prevptr=head;
-					int inserted=0;
-					//if the artist name is in the middle
-					while(ptr.Next!=null && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-						if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-							InsertBefore(prevptr,ptr,sn,an,ab,y);
-							inserted=1;
+				// Dealing with inserting a song with many duplicate names
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0) {
+					Node ptr = head.Next;
+					Node prevptr = head;
+					int inserted = 0;
+					// if the artist name is in the middle
+					while (ptr.Next != null && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+						if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an, ab);
+							inserted = 1;
 							break;
 						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
 					}
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an,ab,y);
-						inserted=1;
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, ab);
+						inserted = 1;
 					}
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())<0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an,ab,y);
-						inserted=1;
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) == 0
+							&& an.compareToIgnoreCase(ptr.GetArtist()) < 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, ab);
+						inserted = 1;
 					}
-					//if the artist name is at the end of the list
-					if(ptr.Next==null && inserted!=1) {
-						InsertAfter(ptr,sn,an,ab,y);
+					// if the artist name is at the end of the list
+					if (ptr.Next == null && inserted != 1) {
+						InsertAfter(ptr, sn, an, ab);
+						inserted = 1;
 					}
-					//if the artist name is in the middle of duplicate names
-					else if(ptr.Next!=null && inserted!=1) {
-						InsertBefore(prevptr,ptr,sn,an,ab,y);
-					}
-				}
-			}
-			else{
-				int inserted=0;
-				Node ptr=head;
-				ptr=ptr.Next;
-				Node prevptr=head;
-				//if the head is the only song currently in the list we decide where to insert the new song
-				if(prevptr==head && prevptr.Next==null){
-					if(sn.compareToIgnoreCase(prevptr.GetSong())<0) {
-						Node Insert=new Node(sn,an,ab,y);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
-					}
-					if(sn.compareToIgnoreCase(prevptr.GetSong())>0) {
-						Node Insert= new Node(sn,an,ab,y);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
+					// if the artist name is in the middle of duplicate names
+					else if (ptr.Next != null && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, ab);
+						inserted = 1;
 					}
 				}
-				else {
-					//Inserting the new song in the middle of the list
-					while(ptr.Next!=null) {
-						if(sn.compareToIgnoreCase(ptr.GetSong())<0) {
-							InsertBefore(prevptr,ptr,sn,an,ab,y);
-							inserted=1;
+			} else {
+				int inserted = 0;
+				Node ptr = head;
+				ptr = ptr.Next;
+				Node prevptr = head;
+				// if the head is the only song currently in the list we decide where to insert
+				// the new song
+				if (prevptr == head && prevptr.Next == null) {
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) < 0) {
+						Node Insert = new Node(sn, an, ab);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) > 0) {
+						Node Insert = new Node(sn, an, ab);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+				} else {
+					// Inserting the new song in the middle of the list
+					while (ptr.Next != null) {
+						if (sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an, ab);
+							inserted = 1;
 							break;
 						}
-						//If the song name is the same we go alphabetically by artist
-						else if(sn.compareToIgnoreCase(ptr.GetSong())==0) {
-							//If the song is the alphabetically lowest 
-							if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-								InsertBefore(prevptr,ptr,sn,an,ab,y);
-								inserted=1;
+						// If the song name is the same we go alphabetically by artist
+						else if (sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+							// If the song is the alphabetically lowest
+							if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+								InsertBefore(prevptr, ptr, sn, an, ab);
+								inserted = 1;
+								break;
+							} else if (ptr.Next == null && an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+								InsertAfter(ptr, sn, an, ab);
+								inserted = 1;
 								break;
 							}
-							else if(ptr.Next==null && an.compareToIgnoreCase(ptr.GetArtist())>0) {
-								InsertAfter(ptr,sn,an,ab,y);
-								inserted=1;
+							// If there is only one comparison to be done and it comes after the other
+							// duplicate song
+							else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) != 0) {
+								ptr = ptr.Next;
+								prevptr = prevptr.Next;
+								InsertBefore(prevptr, ptr, sn, an, ab);
+								inserted = 1;
 								break;
-							}
-							//If there is only one comparison to be done and it comes after the other duplicate song
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())!=0) {
-								ptr=ptr.Next;
-								prevptr=prevptr.Next;
-								InsertBefore(prevptr,ptr,sn,an,ab,y);
-								inserted=1;
-								break;
-							}
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())==0) {
-								Node ptr2=ptr.Next;
-								Node prevptr2=ptr;
-								//If the song is inserted in the middle
-								while(ptr2.Next!=null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && inserted!=1) {
-									if(an.compareToIgnoreCase(ptr2.GetArtist())<0) {
-										InsertBefore(prevptr2,ptr2,sn,an,ab,y);
-										inserted=1;
+							} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) == 0) {
+								Node ptr2 = ptr.Next;
+								Node prevptr2 = ptr;
+								// If the song is inserted in the middle
+								while (ptr2.Next != null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& inserted != 1) {
+									if (an.compareToIgnoreCase(ptr2.GetArtist()) < 0) {
+										InsertBefore(prevptr2, ptr2, sn, an, ab);
+										inserted = 1;
 										break;
 									}
-									ptr2=ptr2.Next;
-									prevptr2=prevptr2.Next;
+									ptr2 = ptr2.Next;
+									prevptr2 = prevptr2.Next;
 								}
-								//Insertion Edge Case
-								if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-									InsertBefore(prevptr,ptr,sn,an,ab,y);
-									inserted=1;
+								// Insertion Edge Case
+								if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+									InsertBefore(prevptr, ptr, sn, an, ab);
+									inserted = 1;
 									break;
 								}
-								//Insertion Edge Case
-								if(ptr2.Next==null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && an.compareToIgnoreCase(ptr2.GetArtist())<0 && inserted!=1){
-									InsertBefore(prevptr2,ptr2,sn,an,ab,y);
-									inserted=1;
+								// insertion edge case
+								if (ptr2.Next == null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& an.compareToIgnoreCase(ptr2.GetArtist()) < 0 && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an, ab);
+									inserted = 1;
 									break;
 								}
-								//If the song is inserted last
-								if(ptr2.Next==null && inserted!=1) {
-									InsertAfter(ptr2,sn,an,ab,y);
-									inserted=1;
+								// If the song is inserted last
+								if (ptr2.Next == null && inserted != 1) {
+									InsertAfter(ptr2, sn, an, ab);
+									inserted = 1;
 									break;
 								}
-								//If the song is inserted in the middle of the names
-								else if(ptr2.Next!=null && inserted!=1) {
-									InsertBefore(prevptr2,ptr2,sn,an,ab,y);
-									inserted=1;
+								// If the song is inserted in the middle of the names
+								else if (ptr2.Next != null && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an, ab);
+									inserted = 1;
 									break;
 								}
-	
+
 							}
-							
+
 						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
 					}
 				}
-				
-				//If the song is last and also a duplicate
-				if(inserted==0 &&sn.compareToIgnoreCase(ptr.GetSong())==0) {
-					if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-						InsertBefore(prevptr,ptr,sn,an,ab,y);
+
+				// If the song is last and also a duplicate
+				if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+					if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+						InsertBefore(prevptr, ptr, sn, an, ab);
+					} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+						InsertAfter(ptr, sn, an, ab);
 					}
-					else if(an.compareToIgnoreCase(ptr.GetArtist())>0) {
-						InsertAfter(ptr,sn,an,ab,y);
-					}
 				}
-				//if the song is the second to last in the list alphabetically
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())<0 ) {
-					InsertBefore(prevptr,ptr,sn,an,ab,y);
+				// if the song is the second to last in the list alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+					InsertBefore(prevptr, ptr, sn, an, ab);
 				}
-				//if the song is the last song alphabetically 
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())>0) {
-					InsertAfter(ptr,sn,an,ab,y);
+				// if the song is the last song alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) > 0) {
+					InsertAfter(ptr, sn, an, ab);
 				}
-				
+
 			}
-			
+
 		}
 	}
-	public void AddNode(String sn, String an,int y) {
-		//If the head is null we add the starting node
-		if(head==null) {
-			head= new Node(sn,an,y);
-			head.Next=null;
-		}
-		else {
-			//if the song inserted is alphabetically lower than our first we insert it first
-			if(sn.compareToIgnoreCase(head.GetSong())<0) {
-				Node Insert=new Node(sn,an,y);
-				Insert.Next=head;
-				head=Insert;
+
+	public void AddNode(String sn, String an, String ab, int y) {
+		// If the head is null we add the starting node
+		if (head == null) {
+			head = new Node(sn, an, ab, y);
+			head.Next = null;
+		} else {
+			// if the song inserted is alphabetically lower than our first we insert it
+			// first
+			if (sn.compareToIgnoreCase(head.GetSong()) < 0) {
+				Node Insert = new Node(sn, an, ab, y);
+				Insert.Next = head;
+				head = Insert;
 			}
-			//If the first song names are equal we sort by artist names instead
-			else if(sn.compareToIgnoreCase(head.GetSong())==0) {
-				//If the artist name is alphabetically lower
-				if(an.compareToIgnoreCase(head.GetArtist())<0) {
-					Node Insert=new Node(sn,an,y);
-					Insert.Next=head;
-					head=Insert;
+			// If the first song names are equal we sort by artist names instead
+			else if (sn.compareToIgnoreCase(head.GetSong()) == 0) {
+				// If the artist name is alphabetically lower
+				if (an.compareToIgnoreCase(head.GetArtist()) < 0) {
+					Node Insert = new Node(sn, an, ab, y);
+					Insert.Next = head;
+					head = Insert;
 				}
-				//if there is only one song and it is alphabetically higher we insert it at the end.
-				else if(head.Next==null) {
-					Node Insert=new Node(sn,an,y);
-					head.Next=Insert;
+				// if there is only one song and it is alphabetically higher we insert it at the
+				// end.
+				else if (head.Next == null) {
+					Node Insert = new Node(sn, an, ab, y);
+					head.Next = Insert;
 				}
-				//if it is alphabetically higher and the head is the only duplicate song we insert it after the head
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())!=0) {
-					Node ptr=head.Next;
-					InsertBefore(head,ptr,sn,an,y);
+				// if it is alphabetically higher and the head is the only duplicate song we
+				// insert it after the head
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) != 0) {
+					Node ptr = head.Next;
+					InsertBefore(head, ptr, sn, an, ab, y);
 				}
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0 && an.compareToIgnoreCase(head.Next.GetArtist())<0) {
-					InsertBefore(head,head.Next,sn,an,y);
+				// Middle Insertion edge case
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0
+						&& an.compareToIgnoreCase(head.Next.GetArtist()) < 0) {
+					InsertBefore(head, head.Next, sn, an, ab, y);
 				}
-				//Dealing with inserting a song with many duplicate names
-				else if(an.compareToIgnoreCase(head.GetArtist())>0 && sn.compareToIgnoreCase(head.Next.GetSong())==0) {
-					Node ptr=head.Next;
-					Node prevptr=head;
-					int inserted=0;
-					//if the artist name is in the middle
-					while(ptr.Next!=null && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-						if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-							InsertBefore(prevptr,ptr,sn,an,y);
-							inserted=1;
+				// Dealing with inserting a song with many duplicate names
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0) {
+					Node ptr = head.Next;
+					Node prevptr = head;
+					int inserted = 0;
+					// if the artist name is in the middle
+					while (ptr.Next != null && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+						if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an, ab, y);
+							inserted = 1;
 							break;
 						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
 					}
-					//Insertion Edge Case
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0){
-						InsertBefore(prevptr,ptr,sn,an,y);
-						inserted=1;
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, ab, y);
+						inserted = 1;
 					}
-					if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())==0 && an.compareToIgnoreCase(ptr.GetArtist())<0 && inserted!=1){
-						InsertBefore(prevptr,ptr,sn,an,y);
-						inserted=1;
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) == 0
+							&& an.compareToIgnoreCase(ptr.GetArtist()) < 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, ab, y);
+						inserted = 1;
 					}
-					//if the artist name is at the end of the list
-					if(ptr.Next==null && inserted!=1) {
-						InsertAfter(ptr,sn,an,y);
+					// if the artist name is at the end of the list
+					if (ptr.Next == null && inserted != 1) {
+						InsertAfter(ptr, sn, an, ab, y);
 					}
-					//if the artist name is in the middle of duplicate names
-					else if(ptr.Next!=null && inserted!=1) {
-						InsertBefore(prevptr,ptr,sn,an,y);
-					}
-				}
-			}
-			else{
-				int inserted=0;
-				Node ptr=head;
-				ptr=ptr.Next;
-				Node prevptr=head;
-				//if the head is the only song currently in the list we decide where to insert the new song
-				if(prevptr==head && prevptr.Next==null){
-					if(sn.compareToIgnoreCase(prevptr.GetSong())<0) {
-						Node Insert= new Node(sn,an,y);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
-					}
-					if(sn.compareToIgnoreCase(prevptr.GetSong())>0) {
-						Node Insert= new Node(sn,an,y);
-						head.Next=Insert;
-						Insert.Next=null;
-						inserted=1;
+					// if the artist name is in the middle of duplicate names
+					else if (ptr.Next != null && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, ab, y);
 					}
 				}
-				else {
-					//Inserting the new song in the middle of the list
-					while(ptr.Next!=null) {
-						if(sn.compareToIgnoreCase(ptr.GetSong())<0) {
-							InsertBefore(prevptr,ptr,sn,an,y);
-							inserted=1;
+			} else {
+				int inserted = 0;
+				Node ptr = head;
+				ptr = ptr.Next;
+				Node prevptr = head;
+				// if the head is the only song currently in the list we decide where to insert
+				// the new song
+				if (prevptr == head && prevptr.Next == null) {
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) < 0) {
+						Node Insert = new Node(sn, an, ab, y);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) > 0) {
+						Node Insert = new Node(sn, an, ab, y);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+				} else {
+					// Inserting the new song in the middle of the list
+					while (ptr.Next != null) {
+						if (sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an, ab, y);
+							inserted = 1;
 							break;
 						}
-						//If the song name is the same we go alphabetically by artist
-						else if(sn.compareToIgnoreCase(ptr.GetSong())==0) {
-							//If the song is the alphabetically lowest 
-							if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-								InsertBefore(prevptr,ptr,sn,an,y);
-								inserted=1;
+						// If the song name is the same we go alphabetically by artist
+						else if (sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+							// If the song is the alphabetically lowest
+							if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+								InsertBefore(prevptr, ptr, sn, an, ab, y);
+								inserted = 1;
+								break;
+							} else if (ptr.Next == null && an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+								InsertAfter(ptr, sn, an, ab, y);
+								inserted = 1;
 								break;
 							}
-							else if(ptr.Next==null && an.compareToIgnoreCase(ptr.GetArtist())>0) {
-								InsertAfter(ptr,sn,an,y);
-								inserted=1;
+							// If there is only one comparison to be done and it comes after the other
+							// duplicate song
+							else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) != 0) {
+								ptr = ptr.Next;
+								prevptr = prevptr.Next;
+								InsertBefore(prevptr, ptr, sn, an, ab, y);
+								inserted = 1;
 								break;
-							}
-							//If there is only one comparison to be done and it comes after the other duplicate song
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())!=0) {
-								ptr=ptr.Next;
-								prevptr=prevptr.Next;
-								InsertBefore(prevptr,ptr,sn,an,y);
-								inserted=1;
-								break;
-							}
-							else if(an.compareToIgnoreCase(ptr.GetArtist())>0 && sn.compareToIgnoreCase(ptr.Next.GetSong())==0) {
-								Node ptr2=ptr.Next;
-								Node prevptr2=ptr;
-								//If the song is inserted in the middle
-								while(ptr2.Next!=null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && inserted!=1) {
-									if(an.compareToIgnoreCase(ptr2.GetArtist())<0) {
-										InsertBefore(prevptr2,ptr2,sn,an,y);
-										inserted=1;
+							} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) == 0) {
+								Node ptr2 = ptr.Next;
+								Node prevptr2 = ptr;
+								// If the song is inserted in the middle
+								while (ptr2.Next != null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& inserted != 1) {
+									if (an.compareToIgnoreCase(ptr2.GetArtist()) < 0) {
+										InsertBefore(prevptr2, ptr2, sn, an, ab, y);
+										inserted = 1;
 										break;
 									}
-									ptr2=ptr2.Next;
-									prevptr2=prevptr2.Next;
+									ptr2 = ptr2.Next;
+									prevptr2 = prevptr2.Next;
 								}
-								//Insertion Edge Case
-								if(ptr.Next==null && sn.compareToIgnoreCase(ptr.GetSong())!=0 && inserted!=1){
-									InsertBefore(prevptr,ptr,sn,an,y);
-									inserted=1;
+								// Insertion Edge Case
+								if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+									InsertBefore(prevptr, ptr, sn, an, ab, y);
+									inserted = 1;
 									break;
 								}
-								if(ptr2.Next==null && sn.compareToIgnoreCase(ptr2.GetSong())==0 && an.compareToIgnoreCase(ptr2.GetArtist())<0 && inserted!=1){
-									InsertBefore(prevptr2,ptr2,sn,an,y);
-									inserted=1;
+								// Insertion Edge Case
+								if (ptr2.Next == null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& an.compareToIgnoreCase(ptr2.GetArtist()) < 0 && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an, ab, y);
+									inserted = 1;
 									break;
 								}
-								//If the song is inserted last
-								if(ptr2.Next==null && inserted!=1) {
-									InsertAfter(ptr2,sn,an,y);
-									inserted=1;
+								// If the song is inserted last
+								if (ptr2.Next == null && inserted != 1) {
+									InsertAfter(ptr2, sn, an, ab, y);
+									inserted = 1;
 									break;
 								}
-								//If the song is inserted in the middle of the names
-								else if(ptr2.Next!=null && inserted!=1) {
-									InsertBefore(prevptr2,ptr2,sn,an,y);
-									inserted=1;
+								// If the song is inserted in the middle of the names
+								else if (ptr2.Next != null && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an, ab, y);
+									inserted = 1;
 									break;
 								}
-	
+
 							}
-							
+
 						}
-						ptr=ptr.Next;
-						prevptr=prevptr.Next;
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
 					}
 				}
-				
-				//If the song is last and also a duplicate
-				if(inserted ==0 && sn.compareToIgnoreCase(ptr.GetSong())==0) {
-					if(an.compareToIgnoreCase(ptr.GetArtist())<0) {
-						InsertBefore(prevptr,ptr,sn,an,y);
+
+				// If the song is last and also a duplicate
+				if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+					if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+						InsertBefore(prevptr, ptr, sn, an, ab, y);
+					} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+						InsertAfter(ptr, sn, an, ab, y);
 					}
-					else if(an.compareToIgnoreCase(ptr.GetArtist())>0) {
-						InsertAfter(ptr,sn,an,y);
-					}
 				}
-				//if the song is the second to last in the list alphabetically
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())<0) {
-					InsertBefore(prevptr,ptr,sn,an,y);
+				// if the song is the second to last in the list alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+					InsertBefore(prevptr, ptr, sn, an, ab, y);
 				}
-				//if the song is the last song alphabetically 
-				else if(inserted==0 && sn.compareToIgnoreCase(ptr.GetSong())>0) {
-					InsertAfter(ptr,sn,an,y);
+				// if the song is the last song alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) > 0) {
+					InsertAfter(ptr, sn, an, ab, y);
 				}
-				
+
 			}
-			
+
 		}
 	}
-	 
+
+	public void AddNode(String sn, String an, int y) {
+		// If the head is null we add the starting node
+		if (head == null) {
+			head = new Node(sn, an, y);
+			head.Next = null;
+		} else {
+			// if the song inserted is alphabetically lower than our first we insert it
+			// first
+			if (sn.compareToIgnoreCase(head.GetSong()) < 0) {
+				Node Insert = new Node(sn, an, y);
+				Insert.Next = head;
+				head = Insert;
+			}
+			// If the first song names are equal we sort by artist names instead
+			else if (sn.compareToIgnoreCase(head.GetSong()) == 0) {
+				// If the artist name is alphabetically lower
+				if (an.compareToIgnoreCase(head.GetArtist()) < 0) {
+					Node Insert = new Node(sn, an, y);
+					Insert.Next = head;
+					head = Insert;
+				}
+				// if there is only one song and it is alphabetically higher we insert it at the
+				// end.
+				else if (head.Next == null) {
+					Node Insert = new Node(sn, an, y);
+					head.Next = Insert;
+				}
+				// if it is alphabetically higher and the head is the only duplicate song we
+				// insert it after the head
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) != 0) {
+					Node ptr = head.Next;
+					InsertBefore(head, ptr, sn, an, y);
+				} else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0
+						&& an.compareToIgnoreCase(head.Next.GetArtist()) < 0) {
+					InsertBefore(head, head.Next, sn, an, y);
+				}
+				// Dealing with inserting a song with many duplicate names
+				else if (an.compareToIgnoreCase(head.GetArtist()) > 0
+						&& sn.compareToIgnoreCase(head.Next.GetSong()) == 0) {
+					Node ptr = head.Next;
+					Node prevptr = head;
+					int inserted = 0;
+					// if the artist name is in the middle
+					while (ptr.Next != null && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+						if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an, y);
+							inserted = 1;
+							break;
+						}
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
+					}
+					// Insertion Edge Case
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0) {
+						InsertBefore(prevptr, ptr, sn, an, y);
+						inserted = 1;
+					}
+					if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) == 0
+							&& an.compareToIgnoreCase(ptr.GetArtist()) < 0 && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, y);
+						inserted = 1;
+					}
+					// if the artist name is at the end of the list
+					if (ptr.Next == null && inserted != 1) {
+						InsertAfter(ptr, sn, an, y);
+					}
+					// if the artist name is in the middle of duplicate names
+					else if (ptr.Next != null && inserted != 1) {
+						InsertBefore(prevptr, ptr, sn, an, y);
+					}
+				}
+			} else {
+				int inserted = 0;
+				Node ptr = head;
+				ptr = ptr.Next;
+				Node prevptr = head;
+				// if the head is the only song currently in the list we decide where to insert
+				// the new song
+				if (prevptr == head && prevptr.Next == null) {
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) < 0) {
+						Node Insert = new Node(sn, an, y);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+					if (sn.compareToIgnoreCase(prevptr.GetSong()) > 0) {
+						Node Insert = new Node(sn, an, y);
+						head.Next = Insert;
+						Insert.Next = null;
+						inserted = 1;
+					}
+				} else {
+					// Inserting the new song in the middle of the list
+					while (ptr.Next != null) {
+						if (sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+							InsertBefore(prevptr, ptr, sn, an, y);
+							inserted = 1;
+							break;
+						}
+						// If the song name is the same we go alphabetically by artist
+						else if (sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+							// If the song is the alphabetically lowest
+							if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+								InsertBefore(prevptr, ptr, sn, an, y);
+								inserted = 1;
+								break;
+							} else if (ptr.Next == null && an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+								InsertAfter(ptr, sn, an, y);
+								inserted = 1;
+								break;
+							}
+							// If there is only one comparison to be done and it comes after the other
+							// duplicate song
+							else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) != 0) {
+								ptr = ptr.Next;
+								prevptr = prevptr.Next;
+								InsertBefore(prevptr, ptr, sn, an, y);
+								inserted = 1;
+								break;
+							} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0
+									&& sn.compareToIgnoreCase(ptr.Next.GetSong()) == 0) {
+								Node ptr2 = ptr.Next;
+								Node prevptr2 = ptr;
+								// If the song is inserted in the middle
+								while (ptr2.Next != null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& inserted != 1) {
+									if (an.compareToIgnoreCase(ptr2.GetArtist()) < 0) {
+										InsertBefore(prevptr2, ptr2, sn, an, y);
+										inserted = 1;
+										break;
+									}
+									ptr2 = ptr2.Next;
+									prevptr2 = prevptr2.Next;
+								}
+								// Insertion Edge Case
+								if (ptr.Next == null && sn.compareToIgnoreCase(ptr.GetSong()) != 0 && inserted != 1) {
+									InsertBefore(prevptr, ptr, sn, an, y);
+									inserted = 1;
+									break;
+								}
+								if (ptr2.Next == null && sn.compareToIgnoreCase(ptr2.GetSong()) == 0
+										&& an.compareToIgnoreCase(ptr2.GetArtist()) < 0 && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an, y);
+									inserted = 1;
+									break;
+								}
+								// If the song is inserted last
+								if (ptr2.Next == null && inserted != 1) {
+									InsertAfter(ptr2, sn, an, y);
+									inserted = 1;
+									break;
+								}
+								// If the song is inserted in the middle of the names
+								else if (ptr2.Next != null && inserted != 1) {
+									InsertBefore(prevptr2, ptr2, sn, an, y);
+									inserted = 1;
+									break;
+								}
+
+							}
+
+						}
+						ptr = ptr.Next;
+						prevptr = prevptr.Next;
+					}
+				}
+
+				// If the song is last and also a duplicate
+				if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) == 0) {
+					if (an.compareToIgnoreCase(ptr.GetArtist()) < 0) {
+						InsertBefore(prevptr, ptr, sn, an, y);
+					} else if (an.compareToIgnoreCase(ptr.GetArtist()) > 0) {
+						InsertAfter(ptr, sn, an, y);
+					}
+				}
+				// if the song is the second to last in the list alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) < 0) {
+					InsertBefore(prevptr, ptr, sn, an, y);
+				}
+				// if the song is the last song alphabetically
+				else if (inserted == 0 && sn.compareToIgnoreCase(ptr.GetSong()) > 0) {
+					InsertAfter(ptr, sn, an, y);
+				}
+
+			}
+
+		}
+	}
 
 	public void PrintList() {
 		Node ptr = head;
@@ -881,6 +915,7 @@ public class SongLinkedList {
 			}
 			num = SongReader.read();
 		}
+		SongReader.close();
 	}
 
 	public void DeleteNode(String sn, String an) {
@@ -937,22 +972,23 @@ public class SongLinkedList {
 		return false;
 
 	}
-	
-	public void DupeFailSafe(){
-		Node ptr=head.Next;
-		Node prevptr=head;
-		
-		while(ptr.Next!=null) {
-			if((prevptr.GetSong()).equals(ptr.GetSong()) && ((prevptr.GetArtist()).equals(ptr.GetArtist()))){
-				prevptr.Next=ptr.Next;
-				ptr.Next=null;
-				ptr=null;
+
+	public void DupeFailSafe() {
+		Node ptr = head.Next;
+		Node prevptr = head;
+
+		while (ptr.Next != null) {
+			if ((prevptr.GetSong()).equals(ptr.GetSong()) && ((prevptr.GetArtist()).equals(ptr.GetArtist()))) {
+				prevptr.Next = ptr.Next;
+				ptr.Next = null;
+				ptr = null;
 				break;
 			}
-			ptr=ptr.Next;
-			prevptr=prevptr.Next;
+			ptr = ptr.Next;
+			prevptr = prevptr.Next;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 	}
 
