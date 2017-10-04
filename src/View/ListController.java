@@ -248,6 +248,12 @@ public class ListController {
 		if (!confirm())
 			return;
 
+		if (!yerTxt.getText().equals(null) && yerTxt.getText().length() > 0 && !isNumeric(yerTxt.getText())) {
+			error3();
+			return;
+
+		}
+
 		if (songTxt.getText().equals("") || artTxt.getText().equals("")) {
 			error();
 			return;
@@ -314,6 +320,14 @@ public class ListController {
 		alert.setTitle("Error");
 		alert.setHeaderText("Duplicate error");
 		alert.setContentText("Song is already in the list!");
+		alert.showAndWait();
+	}
+
+	private void error3() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText("Input error");
+		alert.setContentText("Input yeat is not a number.");
 		alert.showAndWait();
 	}
 
