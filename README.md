@@ -7,6 +7,8 @@
 
 Song library project for Rutgers cs 213 class.
 
+Code may be somehow ugly with brute force
+
 ### Summary ###
 
 * Coded using JavaFX
